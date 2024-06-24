@@ -1,0 +1,1 @@
+0:0:0:0:0:0:0:1 - - [24/Jun/2024:18:09:24 +0530] "GET /ShoppingApp/payment?discount_amt= HTTP/1.1" 400 762
