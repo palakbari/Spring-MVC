@@ -1,0 +1,189 @@
+package in.microsoft.controller;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import in.microsoft.dao.AdminDAO;
+import in.microsoft.pojo.Customer;
+
+@Controller
+public class AdminController 
+{
+	private AdminDAO adao = new AdminDAO();
+	private static final int Session_Timeout_Seconds = 5;
+	
+	@RequestMapping("/addCustomers")
+	public ModelAndView addCustomers(HttpSession session)
+	{
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("add_customer.jsp");
+		System.out.println("Adding Customer(s)");
+		session.setMaxInactiveInterval(Session_Timeout_Seconds);
+		return mv;
+	}
+	
+	@RequestMapping("/getCustomers") 
+    public ModelAndView getCustomers(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws SQLException, ClassNotFoundException
+	{
+		ModelAndView mv = new ModelAndView();
+		int acc_no = Integer.parseInt(request.getParameter("acc_no"));
+		String name = request.getParameter("name");
+		double balance = Double.parseDouble(request.getParameter("balance"));
+		
+		System.out.println("Getting Customers Details:");
+		Customer c = new Customer(acc_no, name, balance);
+		
+		adao.addCustomers(c);
+		mv.setViewName("result.jsp");
+		session.setMaxInactiveInterval(Session_Timeout_Seconds);
+		return mv;
+	}
+	
+	
+	@RequestMapping("/searchCustomersByNumber")
+	public ModelAndView searchCustomersNo(HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("search_customer_number.jsp");
+		System.out.println("Searching Customer");	
+		session.setMaxInactiveInterval(Session_Timeout_Seconds);
+		return mv;
+	}
+	
+	@RequestMapping("/getCustomersNumber")
+	public ModelAndView getCustomersNo(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws SQLException, ClassNotFoundException
+	{
+		ModelAndView mv = new ModelAndView();
+		int acc_no = Integer.parseInt(request.getParameter("acc_no"));
+        
+		System.out.println("Fetching Customers Details:" +acc_no);
+		List<Customer> customers = adao.searchCustomersNo(acc_no); 
+
+	    mv.addObject("customers", customers);
+		mv.setViewName("search_customer_details.jsp");
+		session.setMaxInactiveInterval(Session_Timeout_Seconds);
+		return mv;
+	}
+		
+	@RequestMapping("/searchCustomersByName")
+	public ModelAndView searchCustomersN(HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("search_customer_name.jsp");
+		System.out.println("Searching Customer");
+		session.setMaxInactiveInterval(Session_Timeout_Seconds);
+		return mv;
+	}
+	
+	@RequestMapping("/getCustomersName")
+	public ModelAndView getCustomersN(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws SQLException, ClassNotFoundException
+	{
+		ModelAndView mv = new ModelAndView();
+		String name = request.getParameter("name");
+		List<Customer> customers = adao.searchCustomersN(name); 
+	    mv.addObject("customers", customers);
+		mv.setViewName("search_customer_details.jsp");
+		System.out.println("Fetching Customers Details" +name);
+		session.setMaxInactiveInterval(Session_Timeout_Seconds);
+		return mv;
+	}
+	
+	@RequestMapping("/updateCustomersByNumber")
+	public ModelAndView updateCustomers(HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("update_customer.jsp");
+		System.out.println("Updatinging Customer");	
+		session.setMaxInactiveInterval(Session_Timeout_Seconds);
+		return mv;
+	}
+	
+	@RequestMapping("/getUpdatedCustomers")
+	public ModelAndView getUpdatedCustomers(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws SQLException, ClassNotFoundException {
+	    ModelAndView mv = new ModelAndView();
+	    int acc_no = Integer.parseInt(request.getParameter("acc_no"));
+	    List<Customer> customers = adao.updateCustomers(acc_no);
+	    
+	    Customer customer = customers.get(0);
+	    request.setAttribute("customer", customer);
+	    
+	    mv.setViewName("update_customer_details.jsp");
+	    System.out.println("Fetching Customers Details" + acc_no);
+	    session.setMaxInactiveInterval(Session_Timeout_Seconds);
+	    return mv;
+	}
+	@RequestMapping("/saveUpdatedCustomer")
+	public ModelAndView saveUpdatedCustomer(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws SQLException, ClassNotFoundException {
+	    ModelAndView mv = new ModelAndView();
+	    int acc_no = Integer.parseInt(request.getParameter("acc_no"));
+	    String newName = request.getParameter("name");
+	    double newBalance = Double.parseDouble(request.getParameter("balance"));
+	    
+	    Customer updatedCustomer = new Customer(acc_no, newName, newBalance);
+	    adao.updateCustomer(updatedCustomer);
+	    
+	    mv.setViewName("update_customer_success.jsp");
+	    session.setMaxInactiveInterval(Session_Timeout_Seconds);
+	    return mv;
+	}
+	
+	@RequestMapping("/removeCustomersByNumber")
+	public ModelAndView removeCustomers(HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("remove_customer.jsp");
+		System.out.println("Deleting Customer");	
+		session.setMaxInactiveInterval(Session_Timeout_Seconds);
+		return mv;
+	}
+	
+	@RequestMapping("/deleteCustomers")
+	public ModelAndView deleteCustomer(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws SQLException, ClassNotFoundException
+	{
+		ModelAndView mv = new ModelAndView();
+		int acc_no = Integer.parseInt(request.getParameter("acc_no"));
+		System.out.println("Getting Customer Account Delete");
+		adao.removeCustomers(acc_no);
+		mv.setViewName("remove_success.jsp");
+		session.setMaxInactiveInterval(Session_Timeout_Seconds);
+		return mv;
+	}
+	
+	@RequestMapping("/displayCustomers")
+	public ModelAndView showCustomers(HttpSession session) throws SQLException, ClassNotFoundException
+	{
+		ModelAndView mv = new ModelAndView();
+		List<Customer> list = adao.showCustomers();
+		for (Customer customer: list) 
+			{ 
+				System.out.println(customer.toString());
+			}
+		mv.setViewName("display_customer.jsp");
+		mv.addObject("list", list);
+		System.out.println("Showing all Customers");
+		session.setMaxInactiveInterval(Session_Timeout_Seconds);
+		return mv;
+	}
+	
+	private void handleSessionTimeout(HttpSession session, HttpServletResponse response) throws IOException
+	{
+        session.invalidate(); 
+        response.sendRedirect("/index.jsp"); 
+    }
+	
+	@RequestMapping("/*")
+    public ModelAndView handleRequests(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException 
+	{
+        if (session != null && System.currentTimeMillis() - session.getLastAccessedTime() > session.getMaxInactiveInterval() * 1000) 
+        {
+            handleSessionTimeout(session, response);
+        }
+        return null;
+    }
+	
+}

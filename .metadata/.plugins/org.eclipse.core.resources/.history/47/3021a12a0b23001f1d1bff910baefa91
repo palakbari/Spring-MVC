@@ -1,0 +1,105 @@
+package in.mindcraft.controller;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import in.mindcraft.pojo.Cart;
+import in.mindcraft.pojo.Customer;
+import in.mindcraft.pojo.Product;
+import in.mindcraft.service.CustomerService;
+import jakarta.servlet.http.HttpSession;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+
+
+@RestController
+public class CustomerController 
+{
+	private final CustomerService customerService;
+	
+	public CustomerController(CustomerService customerService)
+	{
+		this.customerService = customerService;
+	}
+	
+	//methods
+	
+	@PostMapping("/addToCart")
+    public ResponseEntity<Map<String, Object>> addToCart(@RequestBody Cart cart) {
+        Map<String, Object> response = customerService.addToCart(cart);
+        if ("success".equals(response.get("status"))) {
+            return ResponseEntity.ok(response);
+        } 
+        else 
+        {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
+
+	@GetMapping("/getFromCart/{cartId}")
+    public ResponseEntity<List<Product>> getFromCart(@PathVariable int cartId, HttpSession session) 
+	{
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer == null)
+        {
+        	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        List<Map<Product>> products =  customerService.getFromCart(cartId);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/displayBill")
+    public ResponseEntity<Map<String, Object>> displayBill(HttpSession session) 
+    {
+        Customer customer = (Customer) session.getAttribute("customer");
+        double bill = customerService.displayBill(customer.getC_name());
+        Map<String, Object> response = new HashMap<>();
+        response.put("bill", bill);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/payBill")
+    public ResponseEntity<Map<String, Object>> payBill(HttpSession session) throws SQLException 
+    {
+        Customer customer = (Customer) session.getAttribute("customer");
+        List<Product> orderedProducts = customerService.payBill(customer.getC_name());
+        if (orderedProducts == null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("result", "Insufficient Balance in Wallet");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+        double paidBill = customerService.displayBill(customer.getC_name());
+        Map<String, Object> response = new HashMap<>();
+        response.put("result", "Payment successful");
+        response.put("paid", paidBill);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/addBalance")
+    public ResponseEntity<String> addBalance(@RequestBody Map<String, Object> payload) 
+    {
+        String username = (String) payload.get("username");
+        double amount = (Double) payload.get("amount");
+        customerService.addBalance(username, amount);
+        return ResponseEntity.ok("Balance added successfully");
+    }
+
+    @GetMapping("/displayBalance/{username}")
+    public ResponseEntity<Map<String, Object>> displayBalance(@PathVariable String username) 
+    {
+        double balance = customerService.displayBalance(username);
+        Map<String, Object> response = new HashMap<>();
+        response.put("balance", balance);
+        return ResponseEntity.ok(response);
+    }
+}

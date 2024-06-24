@@ -1,0 +1,73 @@
+package in.microsoft.controller;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import in.microsoft.dao.CartDAO;
+import in.microsoft.dao.CustomerDAO;
+import in.microsoft.dao.ProductDAO;
+import in.microsoft.pojos.Cart;
+import in.microsoft.pojos.Customer;
+import in.microsoft.pojos.Product;
+
+@Controller
+public class CustomerController 
+{
+	private CartDAO cdao = new CartDAO();
+	
+	@RequestMapping("/addProductsToCart")
+	public ModelAndView addProductsToCart(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+	{
+		Customer customer = (Customer) session.getAttribute("customer");
+		int pid = Integer.parseInt(request.getParameter("pid"));
+		int quantity = Integer.parseInt(request.getParameter("quantity"));
+		cdao.addProductsToCart(customer, pid, quantity);
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("add_products_to_cart.jsp");
+		System.out.println("Adding Product(s)");
+		return mv;
+	}
+	
+	@RequestMapping("/getProductsToCart")
+	public ModelAndView getProductsToCart(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException
+	{
+		ModelAndView mv = new ModelAndView();
+		String name = request.getParameter("name");
+		int quantity = Integer.parseInt(request.getParameter("quantity"));
+		//String pro_name = request.getParameter("pro_name");
+		System.out.println("Adding Products In Cart");
+		Cart cart = new Cart(name, quantity);
+		pdao.addProductsToCart(cart);
+		mv.setViewName("add_products_to_cart_success.jsp");	
+		return mv;
+	}
+	
+	@RequestMapping("/removeProductsFromCart")
+	public ModelAndView removeProducts() 
+	{
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("remove_products_from_cart.jsp");
+		System.out.println("Removing Product(s)");	
+		return mv;
+	}
+	
+	@RequestMapping("/deleteProduct")
+	public ModelAndView deleteProduct(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException {
+		ModelAndView mv = new ModelAndView();
+		String name = request.getParameter("productName");
+		System.out.println("Getting Product Remove");
+		pdao.removeProducts(name);
+		mv.setViewName("remove_product_from_cart_success.jsp");
+		return mv;
+	}
+	
+	
+}

@@ -1,0 +1,72 @@
+package in.mindcraft.controller;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import in.mindcraft.pojo.Cart;
+import in.mindcraft.pojo.Product;
+import in.mindcraft.service.CustomerService;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+
+
+@RestController
+public class CustomerController 
+{
+	private final CustomerService customerService;
+	
+	public CustomerController(CustomerService customerService)
+	{
+		this.customerService = customerService;
+	}
+	
+	//methods
+	
+	@PostMapping("/addToCart")
+	public ResponseEntity<Map<String, Object>> addToCart(@RequestBody Cart cart) 
+	{
+		Map<String, Object> response = customerService.addToCart(cart);
+		if("success".equals(response.get("status")))
+		{
+			return ResponseEntity.ok(response);
+		}
+		else
+		{
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+		}
+	}
+	
+	@GetMapping("/getFromCart/{cartId}")
+	public List<Map<String, Object>> getFromCart(@PathVariable int cartId) 
+	{
+	    List<Map<String, Object>> result = customerService.getFromCart(cartId);
+	    return result;
+	}
+	
+	@PostMapping("/payBill")
+    public Map<String, Object> payBill(@RequestBody Cart cart) {
+        List<Product> orderedProducts = customerService.payBill(cart);
+        double bill = customerService.displayBill(cart);
+        Map<String, Object> response = new HashMap<>();
+        response.put("orderedProducts", orderedProducts);
+        response.put("bill", bill);
+        return response;
+    }
+
+    @GetMapping("/displayBill")
+    public Map<String, Object> displayBill(@RequestBody Cart cart) {
+        double bill = customerService.displayBill(cart);
+        Map<String, Object> response = new HashMap<>();
+        response.put("bill", bill);
+        return response;
+    }
+}

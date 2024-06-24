@@ -1,0 +1,8 @@
+package in.mindcraft.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class RegisterService  {
+
+}

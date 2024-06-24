@@ -1,0 +1,12 @@
+<html>
+<body>
+<body>
+    <div class="container">
+        <h1>Welcome</h1>
+        <form action="api">
+            <p>Hello</p>
+        </form>
+    </div>
+</body>
+</body>
+</html>

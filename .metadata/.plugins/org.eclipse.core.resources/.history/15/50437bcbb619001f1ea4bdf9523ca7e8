@@ -1,0 +1,28 @@
+package in.mindcraft.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import in.mindcraft.service.AdminService;
+
+@Controller
+public class AdminController 
+{
+	private final AdminService adminService;
+	
+	public AdminController(AdminService adminService)
+	{
+		this.adminService = adminService;
+	}
+	
+	//methods
+	@GetMapping("/getProducts")
+	public List<Map<String, Object>> getProducts()
+	{
+		List<Map<String, Object>> result = adminService.getProducts();
+		return result;
+	}
+
+}

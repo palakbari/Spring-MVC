@@ -1,0 +1,40 @@
+var sessionTimeoutMinutes = 5; // Session timeout duration in minutes
+var sessionTimer;
+
+function startSessionTimer() 
+{
+    sessionTimer = setTimeout(function() 
+    {
+        // Session timeout reached, notify the server
+        notifyServerSessionTimeout();
+    }, 
+    sessionTimeoutMinutes * 60 * 1000); // Convert minutes to milliseconds
+}
+
+function resetSessionTimer() 
+{
+    clearTimeout(sessionTimer);
+    startSessionTimer();
+}
+
+function notifyServerSessionTimeout() 
+{
+    // Send an AJAX request to the server to notify session timeout
+    $.post("/sessionTimeout", function(data) 
+    {
+        // Handle response if needed
+    });
+}
+
+// Start the session timer when the page loads
+$(document).ready(function() {
+    startSessionTimer();
+
+    // Reset the session timer on user activity
+    $(document).mousemove(function() {
+        resetSessionTimer();
+    });
+});
+
+
+

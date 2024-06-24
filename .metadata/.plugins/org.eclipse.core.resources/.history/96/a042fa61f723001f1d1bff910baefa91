@@ -1,0 +1,25 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<h2>Current Balance:</h2>
+
+<tr>
+<td>
+<h4><%=request.getAttribute("balance") %></h4>
+</td>
+</tr>
+<tr>
+
+</table>
+<%= request.getAttribute("result") != null ? request.getAttribute("result") : "" %>
+<form action="customerHome">
+		<button type="submit">Return Home</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,197 @@
+package in.microsoft.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import in.microsoft.pojos.Cart;
+import in.microsoft.utils.DBUtils;
+
+public class CartDAO 
+{
+	private Connection cn;
+	private PreparedStatement pst1;
+	private PreparedStatement pst2;
+	private PreparedStatement pst3;
+	private PreparedStatement pst4;
+	private PreparedStatement pst5;
+	private PreparedStatement pst6;
+	private PreparedStatement pst7;
+	private PreparedStatement pst8;
+	
+	public double calculateSum(List<Double> numbers) {
+        return numbers.stream().mapToDouble(Double::doubleValue).sum();
+    }
+	
+	public void addItems(String username, int pid, String product_name, double product_cost,int quantity ,double discount,String invoiced) throws ClassNotFoundException, SQLException {
+		
+		cn = DBUtils.openConnection();
+		
+		pst1 = cn.prepareStatement("Insert into cart values(?,?,?,?,?,?,?)");
+		pst1.setString(1, username);
+		pst1.setInt(2, pid);
+		pst1.setString(3, product_name);
+		pst1.setDouble(4, product_cost);
+		pst1.setInt(5, quantity);
+		pst1.setDouble(6, discount);
+		pst1.setString(7, invoiced);
+		pst1.execute();
+		
+		pst2 = cn.prepareStatement("Update product set quantity = quantity - 1 where pid = ?"); 
+		pst2.setInt(1, pid);
+		pst2.execute();	
+		pst7 = cn.prepareStatement("select quantity from product where pid = ?");
+		pst7.setInt(1, pid);
+		ResultSet rst =  pst7.executeQuery();
+
+		while(rst.next()) {
+			int quants = rst.getInt(1);
+			System.out.println("the items are over!!!");
+			if(quants < 1) {
+				pst8 = cn.prepareStatement("delete from product where pid = ?");
+				pst8.setInt(1, pid);
+				pst8.execute();
+			}
+		}
+		
+		DBUtils.closedConnection();
+	}
+	
+	public List<Cart> showCart(String username) throws ClassNotFoundException, SQLException {
+		cn = DBUtils.openConnection();
+		
+		List<Cart> cart_list = new ArrayList<>();
+		
+		pst2 = cn.prepareStatement("select * from cart where cid = ? and invoiced = 'No'");
+		
+		pst2.setString(1, username);
+		
+		ResultSet rst = pst2.executeQuery();
+		
+		while(rst.next()) {
+			cart_list.add(new Cart(rst.getString(1), rst.getInt(2), rst.getString(3), rst.getDouble(4),rst.getInt(5), rst.getDouble(6), rst.getString(7)));
+		}
+		
+		DBUtils.closedConnection();
+		
+		return cart_list;
+	}
+
+	public List<Cart> purchased(String username) throws ClassNotFoundException, SQLException {
+		cn = DBUtils.openConnection();
+		
+		List<Cart> cart_list = new ArrayList<>();
+		
+		pst2 = cn.prepareStatement("select * from cart where cid = ? and invoiced = 'Yes'");
+		
+		pst2.setString(1, username);
+		
+		ResultSet rst = pst2.executeQuery();
+		
+		while(rst.next()) {
+			cart_list.add(new Cart(rst.getString(1), rst.getInt(2), rst.getString(3), rst.getDouble(4),rst.getInt(5), rst.getDouble(6), rst.getString(7)));
+		}
+		
+		DBUtils.closedConnection();
+		
+		return cart_list;
+	}
+
+	
+	public List<Cart> billPay(String username) throws ClassNotFoundException, SQLException {
+		cn = DBUtils.openConnection();
+		
+		List<Cart> cart_list = new ArrayList<>();
+		
+//		List<Double> discountAmount = new ArrayList<>();
+		
+		pst3 = cn.prepareStatement("select * from cart where cid = ? and invoiced = 'No'");
+		
+		pst3.setString(1, username);
+		
+		ResultSet rst = pst3.executeQuery();
+		
+		while(rst.next()) {
+
+			cart_list.add(new Cart(rst.getString(1), rst.getInt(2), rst.getString(3), rst.getDouble(4),rst.getInt(5), rst.getDouble(6), rst.getString(7)));
+		}
+		
+		DBUtils.closedConnection();
+		
+		return cart_list;
+	}
+	
+	public double billPay1(String username) throws ClassNotFoundException, SQLException {
+		cn = DBUtils.openConnection();
+			
+		List<Double> actual_Amount = new ArrayList<>();
+		
+		double sum = 0;
+		pst4 = cn.prepareStatement("select * from cart  where cid = ? and invoiced = 'No'");
+		pst4.setString(1, username);
+		
+		ResultSet rst = pst4.executeQuery();
+		
+		while(rst.next()) {
+			double actualAmt = rst.getDouble(4);
+			actual_Amount.add((double) actualAmt);
+			sum = calculateSum(actual_Amount);
+			System.out.println("List is" +actual_Amount);
+		}
+		
+		DBUtils.closedConnection();
+		
+		return sum;
+	}
+	
+	public double billPay2(String username) throws ClassNotFoundException, SQLException {
+		cn = DBUtils.openConnection();
+			
+		List<Double> discount_Amount = new ArrayList<>();
+		
+		double sum = 0;
+		pst5 = cn.prepareStatement("select * from cart  where cid = ? and invoiced = 'No'");
+		pst5.setString(1, username);
+
+		ResultSet rst = pst5.executeQuery();
+		
+		while(rst.next()) {
+			double discountAmt = (rst.getDouble(6) / 100) * rst.getDouble(4);
+			double actualAmt = rst.getDouble(4);
+			double finalAmt = actualAmt - discountAmt;
+			discount_Amount.add((double) finalAmt);
+			sum = calculateSum(discount_Amount);
+			System.out.println("List is" +discount_Amount);
+		}
+		
+		DBUtils.closedConnection();
+		
+		return sum;
+	}
+	
+	public double billPay3(String username) throws ClassNotFoundException, SQLException {
+		cn = DBUtils.openConnection();
+			
+		List<Double> saved_Amount = new ArrayList<>();
+		
+		double sum = 0;
+		pst6 = cn.prepareStatement("select * from cart  where cid = ? and invoiced = 'No'");
+		pst6.setString(1, username);
+
+		ResultSet rst = pst6.executeQuery();
+		
+		while(rst.next()) {
+			double discountAmt = (rst.getDouble(6) / 100) * rst.getDouble(4);
+			saved_Amount.add((double) discountAmt);
+			sum = calculateSum(saved_Amount);
+			System.out.println("List is" +saved_Amount);
+		}
+		
+		DBUtils.closedConnection();
+		
+		return sum;
+	}
+}

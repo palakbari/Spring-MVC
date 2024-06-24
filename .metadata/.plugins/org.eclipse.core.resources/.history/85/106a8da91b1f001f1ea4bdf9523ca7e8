@@ -1,0 +1,102 @@
+package in.microsoft.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import in.microsoft.pojos.Customer;
+import in.microsoft.pojos.Product;
+import in.microsoft.utils.DBUtils;
+
+public class CartDAO 
+{
+	private Connection cn;
+	private PreparedStatement pst1;
+	private PreparedStatement pst2;
+	private PreparedStatement pst3;
+	private PreparedStatement pst4;
+	private PreparedStatement pst5;
+	private PreparedStatement pst6;
+	
+	public void addToCart(Customer customer, int pid, int quantity) throws SQLException, ClassNotFoundException  
+	{
+		cn = DBUtils.openConnection();
+		Product product = null;
+		pst7 = cn.prepareStatement("SELECT * FROM Products WHERE pid = ?");
+		pst7.setInt(1, pid);
+		ResultSet res = pst7.executeQuery();
+		System.out.println("pst7 executed");
+		while (res.next()) {
+			product = new Product(res.getInt("pid"), res.getString("name"), res.getDouble("price"),
+									  quantity, res.getDouble("discount"));
+			System.out.println("while statement executing");
+		}
+		
+	
+
+				if (rs.getInt("pid") == pid) {
+					pst6 = cn.prepareStatement("UPDATE Cart SET quantity = ? WHERE username = ? AND pid = ?");
+					pst6.setInt(1, rs.getInt("quantity") + product.getQuantity());
+					pst6.setString(2, customer.getUsername());
+					pst6.setInt(3, product.getPid());
+					pst6.execute();
+					DBUtils.closedConnection();
+					return;
+				}
+
+		
+		pst1 = cn.prepareStatement("INSERT INTO Cart VALUES(?,?,?,?,?)");
+		pst1.setInt(2, product.getPid());
+		pst1.setString(3, product.getName());
+		pst1.setDouble(4, product.getPrice());
+		pst1.setInt(5,  product.getQuantity());
+		pst1.setDouble(6,  product.getDiscount());
+		
+		pst1.execute();
+		
+		DBUtils.closedConnection();
+	}
+	
+	public Cart displayCart(Customer customer) throws ClassNotFoundException, SQLException {
+		cn = DBUtils.openConnection();
+		
+		Cart cart = new Cart(customer.getUsername());
+		
+		pst1 = cn.prepareStatement("SELECT * FROM Cart WHERE username = ?");
+		pst1.setString(1, customer.getUsername());
+		ResultSet rs = pst1.executeQuery();
+		
+		while(rs.next()) {
+			Product product = new Product(rs.getInt("pid"), rs.getString("name"), rs.getDouble("price"), 
+										  rs.getInt("quantity"), rs.getDouble("discount"));
+			cart.addProduct(product);
+		}
+		
+		DBUtils.closedConnection();
+		return cart;
+	}
+	
+	public void addBalance(Customer customer, Double amount) throws SQLException, ClassNotFoundException 
+	{
+		cn = DBUtils.openConnection();
+		
+		pst3 = cn.prepareStatement("UPDATE Customers SET wallet = wallet + ? WHERE username = ?");
+		pst3.setDouble(1, amount);
+		pst3.execute();
+		
+		DBUtils.closedConnection();
+	}
+	
+	public double displayBalance(Customer customer) throws SQLException ,ClassNotFoundException
+	{
+		cn = DBUtils.openConnection();
+		double balance = 0;
+		
+		if(rs.next()) {
+			balance = rs.getDouble("wallet");
+		}
+		
+		DBUtils.closedConnection();
+		return balance;
+	}
+}

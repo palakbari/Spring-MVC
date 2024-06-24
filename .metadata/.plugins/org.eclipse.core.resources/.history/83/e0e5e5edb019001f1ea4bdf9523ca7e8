@@ -1,0 +1,16 @@
+package in.mindcraft.controller;
+
+import in.mindcraft.service.AdminService;
+
+public class AdminController 
+{
+	private final AdminService adminService;
+	
+	public AdminController(AdminService adminService)
+	{
+		this.adminService = adminService;
+	}
+	
+	//methods
+
+}

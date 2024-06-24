@@ -1,0 +1,26 @@
+package in.mindcraft.service;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AdminService 
+{
+	private final JdbcTemplate jdbcTemplate;
+	
+	public AdminService(JdbcTemplate jdbcTemplate)
+	{
+		this.jdbcTemplate = jdbcTemplate;
+	}
+	
+	public List<Map<String, Object>> getProducts()
+	{
+		String sql = "SELECT * FROM Product";
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+		return list;
+	}
+
+}

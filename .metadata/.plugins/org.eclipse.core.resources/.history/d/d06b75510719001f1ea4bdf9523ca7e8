@@ -1,0 +1,33 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Bill</title>
+</head>
+<body>
+	<h4>==Thank You==</h4>
+	<form action="displayBill">
+	
+	    <table border="1">
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Product Cost</th>
+            <th>Product Quantity</th>
+            <th>Product Discount</th>
+        </tr>
+        <c:forEach var="bill" items="${list}">
+            <tr>
+                <td>${bill.id}</td>
+                <td>${bill.name}</td>
+                <td>${bill.cost}</td>
+                <td>${bill.quantity}</td>
+                <td>${bill.discount}</td>
+            </tr>
+        </c:forEach>
+    	</table>
+    </form>
+</body>
+</html>

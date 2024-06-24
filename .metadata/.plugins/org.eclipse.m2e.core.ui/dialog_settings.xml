@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="MavenProjectWizardLocationPage">
+		<list key="location">
+			<item value="C:\Internship\Spring-MVC\ShoppingSystem"/>
+			<item value="C:\Internship\Spring-MVC\BankingSystem"/>
+			<item value="C:\Internship\Spring-MVC\Case_Study"/>
+			<item value="C:\Internship\Spring-MVC\Case_Study\src\main\java\in\microsoft\dao\AdministrationDAO.java"/>
+			<item value="C:\Internship\Spring-MVC\Layer_Architecture\src\main\webapp\WEB-INF\web.xml"/>
+			<item value="C:\Internship\Spring-MVC\Layered_Architecture"/>
+			<item value="C:\Internship\Spring-MVC\Math-Operation"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+	<section name="MavenProjectWizardArchetypePage">
+		<item key="catalog" value="internal"/>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+	<section name="Maven2ProjectWizardArchifactPage">
+		<list key="package">
+			<item value="in.microsoft"/>
+			<item value="BankSystem.BankSystem"/>
+			<item value="BankingSystem.BankingSystem"/>
+		</list>
+		<list key="groupId">
+			<item value="Backend"/>
+			<item value="BankingSystem"/>
+			<item value="BankSystem"/>
+			<item value="ShoppingSystem"/>
+		</list>
+		<list key="artifactId">
+			<item value="Backend"/>
+			<item value="BankingSystem"/>
+			<item value="BankSystem"/>
+			<item value="ShoppingSystem"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+		<list key="version">
+			<item value="0.0.1-SNAPSHOT"/>
+		</list>
+	</section>
+	<section name="MavenProjectWizardArtifactPage">
+		<list key="groupId">
+		</list>
+		<list key="name">
+		</list>
+		<list key="artifactId">
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+		<list key="version">
+			<item value="0.0.1-SNAPSHOT"/>
+		</list>
+	</section>
+	<section name="org.eclipse.m2e.core.pom.overview">
+	</section>
+	<section name="org.eclipse.m2e.core.pom.dependencies">
+	</section>
+	<section name="wizardPage">
+		<list key="groupId">
+			<item value="Math-Operation"/>
+		</list>
+		<list key="name">
+		</list>
+		<list key="artifactId">
+			<item value="Math-Operation"/>
+		</list>
+		<list key="version">
+			<item value="0.0.1-SNAPSHOT"/>
+		</list>
+	</section>
+</section>

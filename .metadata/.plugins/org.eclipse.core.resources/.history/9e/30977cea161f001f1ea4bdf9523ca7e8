@@ -1,0 +1,60 @@
+package in.microsoft.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import in.microsoft.pojos.Cart;
+import in.microsoft.pojos.Customer;
+import in.microsoft.utils.DBUtils;
+
+public class CustomerDAO 
+{
+	private Connection cn;
+	private PreparedStatement pst1;
+	private PreparedStatement pst2;
+	private PreparedStatement pst3;
+	private PreparedStatement pst4;
+	private PreparedStatement pst5;
+	private PreparedStatement pst6;
+	private PreparedStatement pst7;
+	private PreparedStatement pst8;
+	
+	public void addCustomers(Customer customer) throws SQLException, ClassNotFoundException
+	{
+		cn = DBUtils.openConnection();
+		pst1 = cn.prepareStatement("Insert into customer values (?,?,?)");
+		pst1.setInt(1, customer.getId());
+		pst1.setString(2, customer.getName());
+		pst1.setDouble(3, customer.getBalance());
+		pst1.execute();
+		DBUtils.closedConnection();
+	}
+	
+	public List<Customer> showCustomers() throws SQLException, ClassNotFoundException
+	{
+		cn = DBUtils.openConnection();
+		List<Customer> list = new ArrayList<>();
+		pst2 = cn.prepareStatement("Select * from customer");
+		ResultSet rs = pst2.executeQuery();
+		while(rs.next())
+		{
+			list.add(new Customer(rs.getInt(1), rs.getString(2), rs.getDouble(3)));
+		}
+		System.out.println("Show Customers");
+		DBUtils.closedConnection();
+		return list;
+	}
+	
+	public void removeCustomers(int c) throws ClassNotFoundException, SQLException 
+	{
+   	 	cn = DBUtils.openConnection();
+   	 	pst3 = cn.prepareStatement("Delete from customer where id = ?");
+		pst3.setInt(1, c);
+		pst3.execute();
+		DBUtils.closedConnection();
+   }
+}

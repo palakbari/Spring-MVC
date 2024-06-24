@@ -1,0 +1,14 @@
+<html>
+<body>
+<body>
+    <div class="container">
+        <h1>Welcome</h1>
+        <form action="api">
+            Enter Username: <input type="text" name="username" required><br><br>
+            Enter Password: <input type="password" name="password" required><br><br>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</body>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="selection" value="&#x0D;&#x0A;//&#x09;&#x09;if(name.equalsIgnoreCase(pro_name))&#x0D;&#x0A;//&#x09;&#x09;{&#x0D;&#x0A;//&#x09;&#x09;&#x09;System.out.println(&quot;Adding Products In Cart&quot;);&#x0D;&#x0A;//&#x09;&#x09;&#x09;Cart cart = new Cart(name, quantity);&#x0D;&#x0A;//&#x09;&#x09;&#x09;pdao.addProductsToCart(cart);&#x0D;&#x0A;//&#x09;&#x09;&#x09;mv.setViewName(&quot;add_products_to_cart_success.jsp&quot;);&#x09;&#x0D;&#x0A;//&#x09;&#x09;}&#x0D;&#x0A;//&#x09;&#x09;else &#x0D;&#x0A;//&#x09;&#x09;{&#x0D;&#x0A;//&#x09;&#x09;&#x09;mv.setViewName(&quot;product_availability_error.jsp&quot;);&#x0D;&#x0A;//&#x09;&#x09;&#x09;mv.addObject(&quot;errorMessage&quot;, &quot;Product &apos;&quot; + name + &quot;&apos; is not available.&quot;);&#x0D;&#x0A;//&#x09;&#x09;}"/>
+		<list key="findhistory">
+			<item value="&#x0D;&#x0A;//&#x09;&#x09;if(name.equalsIgnoreCase(pro_name))&#x0D;&#x0A;//&#x09;&#x09;{&#x0D;&#x0A;//&#x09;&#x09;&#x09;System.out.println(&quot;Adding Products In Cart&quot;);&#x0D;&#x0A;//&#x09;&#x09;&#x09;Cart cart = new Cart(name, quantity);&#x0D;&#x0A;//&#x09;&#x09;&#x09;pdao.addProductsToCart(cart);&#x0D;&#x0A;//&#x09;&#x09;&#x09;mv.setViewName(&quot;add_products_to_cart_success.jsp&quot;);&#x09;&#x0D;&#x0A;//&#x09;&#x09;}&#x0D;&#x0A;//&#x09;&#x09;else &#x0D;&#x0A;//&#x09;&#x09;{&#x0D;&#x0A;//&#x09;&#x09;&#x09;mv.setViewName(&quot;product_availability_error.jsp&quot;);&#x0D;&#x0A;//&#x09;&#x09;&#x09;mv.addObject(&quot;errorMessage&quot;, &quot;Product &apos;&quot; + name + &quot;&apos; is not available.&quot;);&#x0D;&#x0A;//&#x09;&#x09;}"/>
+			<item value="////&#x09;@RequestMapping(&quot;/button&quot;)"/>
+		</list>
+	</section>
+</section>

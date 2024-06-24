@@ -1,0 +1,39 @@
+package in.microsoft.pojos;
+
+import java.util.List;
+
+public class Cart 
+{
+	private List<Product> cart;
+	
+	public Cart() 
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Cart(List<Product> cart) 
+	{
+
+		this.cart = cart;
+	}
+
+	public List<Product> getCart() 
+	{
+		return cart;
+	}
+	
+	public void setCart(List<Product> cart) 
+	{
+		this.cart = cart;
+	}
+	
+	@Override
+	public String toString() 
+	{
+		return "Cart [username=" + username + ", cart=" + cart + "]";
+	}
+	
+	
+	
+}

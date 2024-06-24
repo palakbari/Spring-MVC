@@ -1,0 +1,115 @@
+package in.microsoft.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import in.microsoft.pojos.Cart;
+import in.microsoft.pojos.Product;
+import in.microsoft.utils.DBUtils;
+
+public class ProductDAO 
+{
+	private Connection cn;
+	private PreparedStatement pst1;
+	private PreparedStatement pst2;
+	private PreparedStatement pst3;
+	private PreparedStatement pst4;
+	
+	public void addProducts(Product pro) throws SQLException, ClassNotFoundException
+	{
+		cn = DBUtils.openConnection();
+		pst1 = cn.prepareStatement("Insert into product values (?,?,?,?,?)");
+		pst1.setInt(1, pro.getPro_id());
+		pst1.setString(2, pro.getPro_name());
+		pst1.setDouble(3, pro.getPro_price());
+		pst1.setInt(4, pro.getPro_quantity());
+		pst1.setInt(5, pro.getPro_discount());
+		pst1.execute();
+		DBUtils.closedConnection();
+	}
+	
+	public List<Product> showProducts() throws SQLException, ClassNotFoundException
+	{
+		cn = DBUtils.openConnection();
+		List<Product> list = new ArrayList<>();
+		pst2 = cn.prepareStatement("Select * from product ");
+		ResultSet rs = pst2.executeQuery();
+		while(rs.next())
+		{
+			list.add(new Product(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getInt(4), rs.getInt(5)));
+		}
+		System.out.println("Show Products");
+		DBUtils.closedConnection();
+		return list;
+	}
+	
+	public void addProductsToCart(Cart c) throws SQLException, ClassNotFoundException
+	{
+		cn=DBUtils.openConnection();
+		pst3=cn.prepareStatement("Insert into cart values (?,?)");
+		pst3.setString(1, c.getName());
+		pst3.setInt(2, c.getQuantity());
+		pst3.execute();
+		DBUtils.closedConnection();	
+	}
+	
+	public void removeProducts(String c) throws ClassNotFoundException, SQLException 
+	{
+   	 	cn = DBUtils.openConnection();
+   	 	pst3 = cn.prepareStatement("Delete from cart where name = ?");
+		pst3.setString(1, c);
+		pst3.execute();
+		DBUtils.closedConnection();
+   }
+	
+	public List<Cart> showProductsToCart() throws SQLException, ClassNotFoundException
+	{
+		cn = DBUtils.openConnection();
+		List<Cart> list = new ArrayList<>();
+		pst4 = cn.prepareStatement("Select * from cart");
+		ResultSet rs = pst4.executeQuery();
+		while(rs.next())
+		{
+			list.add(new Cart(rs.getString(1), rs.getInt(2)));
+		}
+		System.out.println("Show Products");
+		DBUtils.closedConnection();
+		return list;
+	}
+	
+	public void displayBill(List<Product> products) throws SQLException, ClassNotFoundException 
+	{
+        double totalAmount = 0;
+        int totalQuantity = 0;
+
+        // Printing header
+        System.out.println("-----------------------------------------------------");
+        System.out.println("| Product No | Product Name | Price | Quantity | Discount |");
+        System.out.println("-----------------------------------------------------");
+
+        // Printing each product and calculating totals
+        for (Product pro : products) {
+            double discountedPrice = pro.getPro_price() * (1 - pro.getPro_discount() / 100.0);
+            double totalPrice = discountedPrice * pro.getPro_quantity();
+            totalAmount += totalPrice;
+            totalQuantity += pro.getPro_quantity();
+
+            // Printing product details
+            System.out.printf("| %-11d| %-13s| $%-6.2f| %-9d| %-9d|%n", 
+                              pro.getPro_id(), pro.getPro_name(), discountedPrice, pro.getPro_quantity(), pro.getPro_discount());
+        }
+
+        // Printing footer
+        System.out.println("-----------------------------------------------------");
+        System.out.printf("| Total Quantity: %-31d|%n", totalQuantity);
+        System.out.printf("| Total Amount: $%-34.2f|%n", totalAmount);
+        System.out.println("-----------------------------------------------------");
+
+        // Optionally, you can save this bill to the database
+        // saveBillToDatabase(products, totalAmount, totalQuantity);
+    }
+}

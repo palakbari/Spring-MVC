@@ -1,0 +1,11 @@
+package in.mindcraft.pojo;
+
+public class Product 
+{
+	private int pro_id;
+	private String pro_name;
+	private int pro_cost;
+	private int pro_quantity;
+	private int pro_discount;
+
+}

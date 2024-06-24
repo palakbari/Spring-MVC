@@ -1,0 +1,5 @@
+0:0:0:0:0:0:0:1 - - [24/May/2024:11:43:24 +0530] "GET /ShoppingApp/index.jsp HTTP/1.1" 200 2086
+0:0:0:0:0:0:0:1 - - [24/May/2024:11:43:29 +0530] "GET /ShoppingApp/home?username=admin&password=admin HTTP/1.1" 200 3006
+0:0:0:0:0:0:0:1 - - [24/May/2024:11:46:18 +0530] "GET /ShoppingApp/addProducts? HTTP/1.1" 200 2830
+0:0:0:0:0:0:0:1 - - [24/May/2024:11:46:47 +0530] "GET /ShoppingApp/getProducts?id=11&name=AirPods&price=30000&quantity=40&discount=20 HTTP/1.1" 200 142
+0:0:0:0:0:0:0:1 - - [24/May/2024:11:46:52 +0530] "GET /ShoppingApp/admin_menu.jsp HTTP/1.1" 200 3006

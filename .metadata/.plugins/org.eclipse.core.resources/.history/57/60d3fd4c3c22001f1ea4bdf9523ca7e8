@@ -1,0 +1,29 @@
+package in.mindcraft.pojo;
+
+import java.util.List;
+
+public class Cart 
+{
+	private List<Product> cart;
+
+	public Cart() 
+	{
+		super();
+	}
+
+	public Cart(List<Product> cart) 
+	{
+		super();
+		this.cart = cart;
+	}
+
+	public List<Product> getCart() 
+	{
+		return cart;
+	}
+
+	public void setCart(List<Product> cart) 
+	{
+		this.cart = cart;
+	}
+}
