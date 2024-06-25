@@ -32,6 +32,7 @@
 	</section>
 	<section name="Maven2ProjectWizardArchifactPage">
 		<list key="package">
+			<item value="Backend"/>
 			<item value="in.microsoft"/>
 			<item value="BankSystem.BankSystem"/>
 			<item value="BankingSystem.BankingSystem"/>
