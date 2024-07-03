@@ -7,24 +7,22 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h2>Current Balance:</h2>
-	<table>
-	<tr>
-	<td>
-	<h4><%=request.getAttribute("balance") %></h4>
-	</td>
-	</tr>
-	<tr>
-	<td>
-	<form action="addBalance">
-	Enter amount: <input type="number" name="amount">
-	<button type="submit">Add Balance</button>
-	</form>
-	</td>
-	</table>
-	<%= request.getAttribute("result") != null ? request.getAttribute("result") : "" %>
-	<form action="customerHome">
-			<button type="submit">Return Home</button>
-	</form>
+    <h2>Current Balance: ${balance}</h2>
+    <table>
+        <tr>
+            <td>
+                <form action="addBalance" method="post">
+                    Enter amount: <input type="number" name="amount" required>
+                    <button type="submit">Add Balance</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <p>${result != null ? result : ""}</p>
+    <form action="customerHome" method="post">
+        <button type="submit">Return Home</button>
+    </form>
 </body>
+
+
 </html>

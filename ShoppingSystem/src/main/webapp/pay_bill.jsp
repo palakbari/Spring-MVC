@@ -7,17 +7,17 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h2>Current Balance:</h2>
+<h2>Current Balance:${balance}</h2>
 <table>
 <tr>
 <td>
-<h4><%=request.getAttribute("balance") %></h4>
+<h4></h4>
 </td>
 </tr>
 <form action="payment">
 		<input type="hidden" name="discount_amt" value="${Discount_list}"/>
 		<input type="submit" value="Move to Payment"/> 
-	</form> 
+</form> 
 
 </table>
 
